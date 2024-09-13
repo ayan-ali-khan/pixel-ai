@@ -1,7 +1,7 @@
 /* eslint-disable prefer-const */
 /* eslint-disable no-prototype-builtins */
 import { type ClassValue, clsx } from "clsx";
-import qs from "qs";
+import { qs } from "qs";
 import { twMerge } from "tailwind-merge";
 
 import { aspectRatioOptions } from "@/constants";
@@ -11,21 +11,22 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 // ERROR HANDLER
-export const handleError = (error: unknown) => {
+export const handleError = (error: unknown): never => {
   if (error instanceof Error) {
-    // This is a native JavaScript error (e.g., TypeError, RangeError)
+    // If it's an Error object, log and throw it
     console.error(error.message);
     throw new Error(`Error: ${error.message}`);
   } else if (typeof error === "string") {
-    // This is a string error message
+    // If it's a string, log and throw it
     console.error(error);
     throw new Error(`Error: ${error}`);
   } else {
-    // This is an unknown type of error
-    console.error(error);
-    throw new Error(`Unknown error: ${JSON.stringify(error)}`);
+    // Handle other types of errors (e.g., unknown objects)
+    console.error("An unknown error occurred:", error);
+    throw new Error("An unknown error occurred.");
   }
 };
+
 
 // PLACEHOLDER LOADER - while image is transforming
 const shimmer = (w: number, h: number) => `
